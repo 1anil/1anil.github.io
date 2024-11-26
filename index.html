@@ -20,7 +20,7 @@ var custom_ss_ui = {paramKey:"af_ss_ui",defaultValue:"true"};
 
 //Call the function after embedding the code through a global parameter on the window object called window.AF_SMART_SCRIPT.
 //Onelink URL is generated.
-var result = window.AF_SMART_SCRIPT.createImpressionsLink({
+var result = window.AF_SMART_SCRIPT.generateOneLinkURL({
     oneLinkURL: oneLinkURL,
     afParameters: {
         mediaSource: mediaSource,
@@ -29,7 +29,24 @@ var result = window.AF_SMART_SCRIPT.createImpressionsLink({
             custom_ss_ui
         ]
     }
-});
+})
+	
+var result_url = "No output from script"
+      if (result) {
+            result_url = result.clickURL;            
+            console.log(result);
+            document.getElementById('andrd_link').setAttribute('href', result_url);
+            document.getElementById('ios_link').setAttribute('href', result_url);
+            // The following command will fire the impression.
+            // The impression will fire to https://impressions.onelink.me//....
+            // The wait is a temporary bug fix
+            console.log("Waiting before calling fireImpressionsLink()...");
+            setTimeout(() => {
+              window.AF_SMART_SCRIPT.fireImpressionsLink();
+              console.log("Impression fired"); 
+            }, 1000);            
+      }      
+      document.getElementById('output_url').innerHTML = result_url;	
 
 
 // If needed, you can download the script from: https://onelinksmartscript.appsflyer.com/onelink-smart-script-latest.js
